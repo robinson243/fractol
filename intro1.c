@@ -1,7 +1,7 @@
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include "minilibx-linux/mlx.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 /* int main(void)
 {
@@ -9,7 +9,8 @@
 	void    *win;
 
 	mlx = mlx_init(); // Initialiser la connexion à X11
-	win = mlx_new_window(mlx, 800, 600, "Ma première fenêtre"); // Création fenêtre
+	win = mlx_new_window(mlx, 800, 600, "Ma première fenêtre");
+		// Création fenêtre
 	mlx_loop(mlx); // Boucle infinie qui attend les événements
 	(void)win;
 	return (0);
@@ -163,7 +164,7 @@ Tu peux coder ça et me coller ton résultat ; je te dirai si c’est correct �
 // 	mlx_loop(mlx_ptr);
 // }
 
-int main(void)
+int	main(void)
 {
 	void *mlx_ptr;
 	void *win;
@@ -174,18 +175,21 @@ int main(void)
 	char *addr = mlx_get_data_addr(img, &bpp, &line_length, &endian);
 	win = mlx_new_window(mlx_ptr, 500, 500, "test");
 
-	// int height = 60;
+	int height = 60;
 	int width = 100;
 	int start_x = 200;
 	int start_y = 220;
-	// for (int y = start_y; y < start_y + height; y++)
-	// {
+	for (int y = start_y; y < start_y + height; y++)
+	{
 		for (int x = start_x; x < start_x + width; x++)
 		{
-			char *pixel = addr + (start_y * line_length + x * (bpp / 8));
-			*(unsigned int *)pixel = 0xFF0000;
+			if ((y == start_y || y == start_y + height - 1) || ( x == start_x || x == start_x + width - 1))
+			{
+				char *pixel = addr + (y * line_length + x * (bpp / 8));
+				*(unsigned int *)pixel = 0xFF0000;
+			}
 		}
-	// }
+	}
 	mlx_put_image_to_window(mlx_ptr, win, img, 0, 0);
 	mlx_loop(mlx_ptr);
 }
