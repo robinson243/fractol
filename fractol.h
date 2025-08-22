@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 16:36:27 by romukena          #+#    #+#             */
-/*   Updated: 2025/08/22 18:25:16 by romukena         ###   ########.fr       */
+/*   Updated: 2025/08/22 21:59:36 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ int			handle_keypress(int keycode, t_win *win);
 int			handle_mouse(int button, int x, int y, t_win *win);
 int			calculate_mandelbrot(double c_re, double c_im);
 int			get_color(int iter);
-void		screen_to_complex(t_win *win, int x, int y, double *c_re,
-				double *c_im);
+void		screen_to_complex(t_win *win, int x, int y, double out[2]);
 void		render_fractal(t_win *win);
+int			ft_atoi(const char *str);
 
 #endif

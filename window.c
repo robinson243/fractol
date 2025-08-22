@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:07:37 by romukena          #+#    #+#             */
-/*   Updated: 2025/08/22 18:35:47 by romukena         ###   ########.fr       */
+/*   Updated: 2025/08/22 22:00:04 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,21 +154,20 @@ int	get_color(int iter)
 	return (color[iter % 5]);
 }
 
-void	screen_to_complex(t_win *win, int x, int y, double *c_re, double *c_im)
+void	screen_to_complex(t_win *win, int x, int y, double out[2])
 {
 	double	scale;
 
 	scale = 4.0 / (win->width * win->zoom);
-	*c_re = (x - win->width / 2.0) * scale + win->offset_x;
-	*c_im = (y - win->height / 2.0) * scale + win->offset_y;
+	out[0] = (x - win->width / 2.0) * scale + win->offset_x;
+	out[1] = (y - win->height / 2.0) * scale + win->offset_y;
 }
 
 void	render_fractal(t_win *win)
 {
 	int		x;
 	int		y;
-	double	c_re;
-	double	c_im;
+	double	out[2];
 	int		iter;
 
 	y = 0;
@@ -177,8 +176,8 @@ void	render_fractal(t_win *win)
 		x = 0;
 		while (x < win->width)
 		{
-			screen_to_complex(win, x, y, &c_re, &c_im);
-			iter = calculate_mandelbrot(c_re, c_im);
+			screen_to_complex(win, x, y, out);
+			iter = calculate_mandelbrot(out[0], out[1]);
 			put_pixel(&win->img, x, y, get_color(iter));
 			x++;
 		}
@@ -186,11 +185,52 @@ void	render_fractal(t_win *win)
 	}
 }
 
-int	main(void)
+int	ft_atoi(const char *str)
+{
+	int	result;
+	int	sign;
+
+	result = 0;
+	sign = 1;
+	while (*str == ' ' || (*str >= 9 && *str <= 13))
+		str++;
+	if (*str == '-')
+		sign = -1;
+	if (*str == '-' || *str == '+')
+		str++;
+	while (*str >= '0' && *str <= '9')
+	{
+		result = result * 10 + (*str - '0');
+		str++;
+	}
+	return (sign * result);
+}
+
+int	main(int argc, char **argv)
 {
 	t_win	win;
+	int		width;
+	int		height;
 
-	init_window(&win, 800, 600, "Mandelbrot");
+	width = 800;
+	height = 600;
+	if (argc == 3)
+	{
+		width = ft_atoi(argv[1]);
+		height = ft_atoi(argv[2]);
+		if (width <= 0 || height <= 0 || width > 3840 || height > 2160)
+		{
+			printf("Error: Invalid window size. Using default 800x600\n");
+			width = 800;
+			height = 600;
+		}
+	}
+	else if (argc != 1)
+	{
+		printf("Usage: %s [width height]\n", argv[0]);
+		return (1);
+	}
+	init_window(&win, width, height, "Mandelbrot");
 	mlx_hook(win.win, 2, 1L << 0, handle_keypress, &win);
 	mlx_hook(win.win, 4, 1L << 2, handle_mouse, &win);
 	mlx_hook(win.win, 17, 0, close_window, &win);
