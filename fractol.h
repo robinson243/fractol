@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 16:36:27 by romukena          #+#    #+#             */
-/*   Updated: 2025/08/21 19:05:38 by romukena         ###   ########.fr       */
+/*   Updated: 2025/08/22 18:25:16 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 
 # define MIN_ZOOM 0.1
 # define MAX_ZOOM 1000000000.0
+# define MAX_ITER 100
+# define ESCAPE_RADIUS 2.0
 
 typedef struct s_img
 {
@@ -60,5 +62,10 @@ void		fill_background(t_img *img, int color);
 int			close_window(t_win *win);
 int			handle_keypress(int keycode, t_win *win);
 int			handle_mouse(int button, int x, int y, t_win *win);
+int			calculate_mandelbrot(double c_re, double c_im);
+int			get_color(int iter);
+void		screen_to_complex(t_win *win, int x, int y, double *c_re,
+				double *c_im);
+void		render_fractal(t_win *win);
 
 #endif
