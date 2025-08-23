@@ -1,2 +1,0 @@
-# fractol
-# fractol
