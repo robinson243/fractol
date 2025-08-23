@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:07:37 by romukena          #+#    #+#             */
-/*   Updated: 2025/08/23 00:59:59 by romukena         ###   ########.fr       */
+/*   Updated: 2025/08/23 16:19:34 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,13 @@ int	close_window(t_win *win)
 	return (0);
 }
 
+void	give_info(t_win *win)
+{
+	win->zoom = 1.0;
+	win->offset_x = 0.0;
+	win->offset_y = 0.0;
+}
+
 int	handle_keypress(int keycode, t_win *win)
 {
 	if (keycode == 65307)
@@ -86,11 +93,7 @@ int	handle_keypress(int keycode, t_win *win)
 	else if (keycode == 65453 && win->zoom > MIN_ZOOM)
 		win->zoom /= 1.1;
 	else if (keycode == 114)
-	{
-		win->zoom = 1.0;
-		win->offset_x = 0.0;
-		win->offset_y = 0.0;
-	}
+		give_info(win);
 	else
 		return (0);
 	render_fractal(win);
@@ -107,7 +110,7 @@ int	handle_mouse(int button, int x, int y, t_win *win)
 	new_y = (y - win->height / 2) / win->zoom + win->offset_y;
 	if (button == 4 && win->zoom < MAX_ZOOM)
 		win->zoom *= 1.1;
-	if (button == 5 && win->zoom > MIN_ZOOM)
+	else if (button == 5 && win->zoom > MIN_ZOOM)
 		win->zoom /= 1.1;
 	win->offset_x = new_x - (x - win->width / 2) / win->zoom;
 	win->offset_y = new_y - (y - win->height / 2) / win->zoom;
@@ -197,32 +200,10 @@ void	render_fractal(t_win *win)
 		while (x < win->width)
 		{
 			screen_to_complex(win, x, y, out);
-			iter = calculate_mandelbrot(out[0], out[1]);
-			put_pixel(&win->img, x, y, get_color(iter));
-			x++;
-		}
-		y++;
-	}
-}
-
-void	render_julia(t_win *win, double c_re, double c_im)
-{
-	int		x;
-	int		y;
-	double	z[2];
-	int		iter;
-
-	y = 0;
-	while (y < win->height)
-	{
-		x = 0;
-		while (x < win->width)
-		{
-			z[0] = 4.0 * (x - win->width / 2.0) / (win->width * win->zoom)
-				+ win->offset_x;
-			z[1] = 4.0 * (y - win->height / 2.0) / (win->height * win->zoom)
-				+ win->offset_y;
-			iter = calculate_julia(z[0], z[1], c_re, c_im);
+			if (win->fractol_type == 0)
+				iter = calculate_mandelbrot(out[0], out[1]);
+			else
+				iter = calculate_julia(out[0], out[1], win->c_re, win->c_im);
 			put_pixel(&win->img, x, y, get_color(iter));
 			x++;
 		}
@@ -278,23 +259,46 @@ void	ft_putstr_fd(char *s, int fd)
 	}
 }
 
-static void	parse_args(int argc, char **argv, int *w, int *h)
+double	ft_atod(const char *str)
 {
-	*w = 800;
-	*h = 600;
-	if (argc == 3 && ft_strcmp(argv[1], "julia") != 0)
+	double	result;
+	double	sign;
+	double	dec;
+	int		i;
+
+	result = 0.0;
+	sign = 1.0;
+	dec = 1.0;
+	i = 0;
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+		if (str[i++] == '-')
+			sign = -1.0;
+	while (str[i] >= '0' && str[i] <= '9')
+		result = result * 10.0 + (str[i++] - '0');
+	if (str[i] == '.')
 	{
-		*w = ft_atoi(argv[1]);
-		*h = ft_atoi(argv[2]);
-		if (*w <= 0 || *h <= 0 || *w > 3840 || *h > 2160)
+		while (str[++i] >= '0' && str[i] <= '9')
 		{
-			ft_putstr_fd("Error: Invalid window size. Using default ", 2);
-			ft_putstr_fd("800x600\n", 2);
-			*w = 800;
-			*h = 600;
+			dec /= 10.0;
+			result += (str[i] - '0') * dec;
 		}
 	}
+	return (result * sign);
 }
+
+void	init_fractol(t_win win, int width, int height)
+{
+	init_window(&win, width, height, "Fractol");
+	render_fractal(&win);
+	mlx_put_image_to_window(win.mlx, win.win, win.img.img, 0, 0);
+	mlx_hook(win.win, 2, 1L << 0, handle_keypress, &win);
+	mlx_hook(win.win, 4, 1L << 2, handle_mouse, &win);
+	mlx_hook(win.win, 17, 0, close_window, &win);
+	mlx_loop(win.mlx);
+}
+
 
 int	main(int argc, char **argv)
 {
@@ -302,18 +306,38 @@ int	main(int argc, char **argv)
 	int		width;
 	int		height;
 
-	parse_args(argc, argv, &width, &height);
-	init_window(&win, width, height, "Fractol");
-	mlx_hook(win.win, 2, 1L << 0, handle_keypress, &win);
-	mlx_hook(win.win, 4, 1L << 2, handle_mouse, &win);
-	mlx_hook(win.win, 17, 0, close_window, &win);
-	if (argc == 4 && !ft_strcmp(argv[1], "julia"))
-		render_julia(&win, ft_atoi(argv[2]), ft_atoi(argv[3]));
-	else if (argc == 2 && !ft_strcmp(argv[1], "julia"))
-		render_julia(&win, -0.7, 0.27015);
-	else
-		render_fractal(&win);
-	mlx_put_image_to_window(win.mlx, win.win, win.img.img, 0, 0);
-	mlx_loop(win.mlx);
+	width = 800;
+	height = 600;
+	win.fractol_type = 0;
+	win.c_re = 0.0;
+	win.c_im = 0.0;
+	if (argc >= 2 && !ft_strcmp(argv[1], "julia"))
+	{
+		win.fractol_type = 1;
+		win.c_re = 0.355;
+		win.c_im = 0.355;
+		if (argc >= 4)
+		{
+			win.c_re = ft_atod(argv[2]);
+			win.c_im = ft_atod(argv[3]);
+		}
+		if (argc == 6)
+		{
+			width = ft_atoi(argv[4]);
+			height = ft_atoi(argv[5]);
+		}
+	}
+	else if (argc >= 3)
+	{
+		width = ft_atoi(argv[1]);
+		height = ft_atoi(argv[2]);
+	}
+	if (width <= 0 || width > 3840 || height <= 0 || height > 2160)
+	{
+		ft_putstr_fd("Error: Invalid window size. Using default 800x600\n", 2);
+		width = 800;
+		height = 600;
+	}
+	init_fractol(win, width, height);
 	return (0);
 }

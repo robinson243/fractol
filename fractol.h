@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 16:36:27 by romukena          #+#    #+#             */
-/*   Updated: 2025/08/22 21:59:36 by romukena         ###   ########.fr       */
+/*   Updated: 2025/08/23 16:12:46 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,11 @@ typedef struct s_win
 	double	zoom;
 	double	offset_x;
 	double	offset_y;
-	double	mouse_x;
-	double	mouse_y;
+	double	c_re;
+	double	c_im;
+	double	julia_c_re;
+	double	julia_c_im;
+	int		fractol_type;
 }			t_win;
 
 typedef struct s_fractal
@@ -67,5 +70,11 @@ int			get_color(int iter);
 void		screen_to_complex(t_win *win, int x, int y, double out[2]);
 void		render_fractal(t_win *win);
 int			ft_atoi(const char *str);
+void		give_info(t_win *win);
+int			calculate_julia(double z_re, double z_im, double c_re, double c_im);
+int			ft_strcmp(char *s1, char *s2);
+void		ft_putstr_fd(char *s, int fd);
+double		ft_atod(const char *str);
+void		init_fractol(t_win win, int width, int height);
 
 #endif
