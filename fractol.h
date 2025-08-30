@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 16:36:27 by romukena          #+#    #+#             */
-/*   Updated: 2025/08/23 22:24:34 by romukena         ###   ########.fr       */
+/*   Updated: 2025/08/30 13:07:06 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 # define MIN_ZOOM 0.1
 # define MAX_ZOOM 1000000000.0
-# define MAX_ITER 100
+# define MAX_ITER 500
 # define ESCAPE_RADIUS 2.0
 
 typedef struct s_img
