@@ -6,7 +6,7 @@
 #    By: romukena <romukena@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/24 00:15:30 by romukena          #+#    #+#              #
-#    Updated: 2025/08/24 00:18:30 by romukena         ###   ########.fr        #
+#    Updated: 2025/08/30 12:48:42 by romukena         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ OBJ = $(SRC:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJ)
+	make -C minilibx-linux
 	$(CC) $(OBJ) -Lminilibx-linux -lmlx_Linux -L/usr/lib -lXext -lX11 -lm -lz -o $(NAME)
 
 %.o: %.c
