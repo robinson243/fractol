@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 16:36:27 by romukena          #+#    #+#             */
-/*   Updated: 2025/09/04 11:28:58 by romukena         ###   ########.fr       */
+/*   Updated: 2025/09/04 16:12:41 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define FRACTOL_H
 
 # include "minilibx-linux/mlx.h"
+# include <math.h>
 # include <stdint.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -49,6 +50,8 @@ typedef struct s_win
 	double	c_im;
 	double	julia_c_re;
 	double	julia_c_im;
+	double	burning_cre;
+	double	burning_cim;
 	int		fractol_type;
 }			t_win;
 
@@ -57,7 +60,7 @@ int			init_window(t_win *win, int width, int height, char *title);
 void		put_pixel(t_img *img, int x, int y, int color);
 void		fill_background(t_img *img, int color);
 int			close_window(t_win *win);
-int		init_fractol(t_win *win, int width, int height);
+int			init_fractol(t_win *win, int width, int height);
 
 /* Event handlers */
 int			handle_keypress(int keycode, t_win *win);
@@ -67,6 +70,8 @@ void		give_info(t_win *win);
 /* Fractal calculations */
 int			calculate_mandelbrot(double c_re, double c_im);
 int			calculate_julia(double z_re, double z_im, double c_re, double c_im);
+int			calculate_burningship(double c_re, double c_im, double z_re,
+				double z_im);
 void		render_fractal(t_win *win);
 void		screen_to_complex(t_win *win, int x, int y, double out[2]);
 
@@ -85,6 +90,7 @@ void		init_params(t_win *win);
 int			parse_args(int argc, char **argv, t_win *win, int *size);
 int			parse_julia(int argc, char **argv, t_win *win, int *size);
 int			parse_mandelbrot(int argc, char **argv, int *w, int *h);
+int			parse_burningship(int ac, char **av, int *size);
 void		init_julia_default(t_win *win);
 void		init_params(t_win *win);
 int			free_all(t_win *win);

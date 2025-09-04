@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 00:06:15 by romukena          #+#    #+#             */
-/*   Updated: 2025/09/03 00:26:16 by romukena         ###   ########.fr       */
+/*   Updated: 2025/09/04 16:13:15 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,26 @@ int	calculate_julia(double z_re, double z_im, double c_re, double c_im)
 	return (i);
 }
 
+int	calculate_burningship(double c_re, double c_im, double z_re, double z_im)
+{
+	double	temp_re;
+	double	temp_im;
+	int		i;
+
+	i = 0;
+	while (i < MAX_ITER)
+	{
+		temp_im = fabs(z_im);
+		temp_re = fabs(z_re);
+		z_re = (temp_re * temp_re) - (temp_im * temp_im) + c_re;
+		z_im = 2 * temp_re * temp_im + c_im;
+		if ((z_im * z_im) + (z_re * z_re) > ESCAPE_RADIUS * ESCAPE_RADIUS)
+			break ;
+		i++;
+	}
+	return (i);
+}
+
 void	render_fractal(t_win *win)
 {
 	int		x;
@@ -83,9 +103,11 @@ void	render_fractal(t_win *win)
 			screen_to_complex(win, x, y, out);
 			if (win->fractol_type == 0)
 				iter = calculate_mandelbrot(out[0], out[1]);
-			else
+			else if (win->fractol_type == 1)
 				iter = calculate_julia(out[0], out[1], win->julia_c_re,
 						win->julia_c_im);
+			else
+					iter = calculate_burningship(out[0], out[1], 0.0, 0.0);
 			put_pixel(&win->img, x, y, get_color(iter));
 			x++;
 		}

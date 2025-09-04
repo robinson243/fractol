@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 00:11:02 by romukena          #+#    #+#             */
-/*   Updated: 2025/09/04 10:59:50 by romukena         ###   ########.fr       */
+/*   Updated: 2025/09/04 16:13:43 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	init_params(t_win *win)
 	win->c_im = 0.0;
 	win->julia_c_re = 0.0;
 	win->julia_c_im = 0.0;
+	win->burning_cim = 0.0;
+	win->burning_cre = 0.0;
 }
 
 void	init_julia_default(t_win *win)
@@ -42,4 +44,14 @@ void	init_julia_default(t_win *win)
 	win->zoom = 1.0;
 	win->offset_x = 0.0;
 	win->offset_y = 0.0;
+}
+
+void	init_burning_ship(t_win *win)
+{
+	win->fractol_type = 2;
+	win->zoom = 1.0;
+	win->offset_x = 0.0;
+	win->offset_y = 0.0;
+	win->burning_cim = 0.0;
+	win->burning_cre = 0.0;
 }

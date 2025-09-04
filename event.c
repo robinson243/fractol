@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 00:04:33 by romukena          #+#    #+#             */
-/*   Updated: 2025/08/30 13:21:46 by romukena         ###   ########.fr       */
+/*   Updated: 2025/09/04 16:11:36 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,19 @@ int	handle_mouse(int button, int x, int y, t_win *win)
 		return (0);
 	render_fractal(win);
 	mlx_put_image_to_window(win->mlx, win->win, win->img.img, 0, 0);
+	return (0);
+}
+
+int	free_all(t_win *win)
+{
+	if (win->img.img)
+		mlx_destroy_image(win->mlx, win->img.img);
+	if (win->win)
+		mlx_destroy_window(win->mlx, win->win);
+	if (win->mlx)
+	{
+		mlx_destroy_display(win->mlx);
+		free(win->mlx);
+	}
 	return (0);
 }
