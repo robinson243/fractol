@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 00:12:22 by romukena          #+#    #+#             */
-/*   Updated: 2025/09/04 16:11:19 by romukena         ###   ########.fr       */
+/*   Updated: 2025/09/04 16:27:45 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ int	error_messages(void)
 	ft_putstr_fd("  ./fractol mandelbrot 1024 768\n", 2);
 	ft_putstr_fd("  ./fractol julia -0.7 0.27015\n", 2);
 	ft_putstr_fd("  ./fractol julia -0.4 0.6 1200 800\n", 2);
-	ft_putstr_fd("  ./fractol bruningship\n", 2);
-	ft_putstr_fd("  ./fractol bruningship 1024 768\n", 2);
+	ft_putstr_fd("  ./fractol burningship\n", 2);
+	ft_putstr_fd("  ./fractol burningship 1024 768\n", 2);
 	return (1);
 }
 
