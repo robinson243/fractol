@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   window.c                                           :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:07:37 by romukena          #+#    #+#             */
-/*   Updated: 2025/08/24 00:12:44 by romukena         ###   ########.fr       */
+/*   Updated: 2025/09/04 11:00:47 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int	main(int argc, char **argv)
 		return (1);
 	if (size[0] <= 0 || size[0] > 3840 || size[1] <= 0 || size[1] > 2160)
 		return (ft_putstr_fd("Error: Invalid size. Using default 800x600\n", 2),
-			0);
-	init_fractol(&win, size[0], size[1]);
+			free_all(&win), 1);
+	if (init_fractol(&win, size[0], size[1]) != 0)
+		return (free_all(&win), 1);
 	return (0);
 }

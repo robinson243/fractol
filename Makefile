@@ -6,7 +6,7 @@
 #    By: romukena <romukena@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/24 00:15:30 by romukena          #+#    #+#              #
-#    Updated: 2025/08/30 12:48:42 by romukena         ###   ########.fr        #
+#    Updated: 2025/09/03 11:42:19 by romukena         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ CFLAGS = -Wall -Wextra -Werror -I/usr/include -Iminilibx-linux -O3
 
 NAME = fractol
 
-SRC = event.c  fractal.c  init.c  init_fractal.c  intro1.c  main.c  parsing.c  utils.c 
+SRC = event.c  fractal.c  init.c  init_fractal.c  main.c  parsing.c  utils.c 
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)

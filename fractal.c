@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 00:06:15 by romukena          #+#    #+#             */
-/*   Updated: 2025/08/24 00:07:50 by romukena         ###   ########.fr       */
+/*   Updated: 2025/09/03 00:26:16 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 
 void	screen_to_complex(t_win *win, int x, int y, double out[2])
 {
-	double	scale;
+	double	scale_x;
+	double	scale_y;
 
-	scale = 4.0 / (win->width * win->zoom);
-	out[0] = (x - win->width / 2.0) * scale + win->offset_x;
-	out[1] = (y - win->height / 2.0) * scale + win->offset_y;
+	scale_x = 3.0 / (win->width * win->zoom);
+	scale_y = 2.0 / (win->height * win->zoom);
+	out[0] = (x - win->width / 2.0) * scale_x + win->offset_x;
+	out[1] = (y - win->height / 2.0) * scale_y + win->offset_y;
 }
 
 int	calculate_mandelbrot(double c_re, double c_im)
@@ -82,7 +84,8 @@ void	render_fractal(t_win *win)
 			if (win->fractol_type == 0)
 				iter = calculate_mandelbrot(out[0], out[1]);
 			else
-				iter = calculate_julia(out[0], out[1], win->c_re, win->c_im);
+				iter = calculate_julia(out[0], out[1], win->julia_c_re,
+						win->julia_c_im);
 			put_pixel(&win->img, x, y, get_color(iter));
 			x++;
 		}

@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 00:12:22 by romukena          #+#    #+#             */
-/*   Updated: 2025/08/24 00:12:52 by romukena         ###   ########.fr       */
+/*   Updated: 2025/09/04 11:00:19 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,8 @@ int	parse_julia(int argc, char **argv, t_win *win, int *size)
 	init_julia_default(win);
 	if (argc >= 4)
 	{
-		win->c_re = ft_atod(argv[2]);
-		win->c_im = ft_atod(argv[3]);
-		win->julia_c_re = win->c_re;
-		win->julia_c_im = win->c_im;
+		win->julia_c_re = ft_atod(argv[2]);
+		win->julia_c_im = ft_atod(argv[3]);
 	}
 	if (argc >= 6)
 	{
@@ -67,4 +65,18 @@ int	parse_args(int argc, char **argv, t_win *win, int *size)
 		return (parse_julia(argc, argv, win, size));
 	return (ft_putstr_fd("Error: Unknown fractal type. Use mandelbrot/julia\n",
 			2), 1);
+}
+
+int	free_all(t_win *win)
+{
+	if (win->img.img)
+		mlx_destroy_image(win->mlx, win->img.img);
+	if (win->win)
+		mlx_destroy_window(win->mlx, win->win);
+	if (win->mlx)
+	{
+		mlx_destroy_display(win->mlx);
+		free(win->mlx);
+	}
+	return (0);
 }

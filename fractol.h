@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 16:36:27 by romukena          #+#    #+#             */
-/*   Updated: 2025/08/23 22:24:34 by romukena         ###   ########.fr       */
+/*   Updated: 2025/09/04 11:28:58 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 # define MIN_ZOOM 0.1
 # define MAX_ZOOM 1000000000.0
-# define MAX_ITER 100
+# define MAX_ITER 200
 # define ESCAPE_RADIUS 2.0
 
 typedef struct s_img
@@ -53,11 +53,11 @@ typedef struct s_win
 }			t_win;
 
 /* Window functions */
-void		init_window(t_win *win, int width, int height, char *title);
+int			init_window(t_win *win, int width, int height, char *title);
 void		put_pixel(t_img *img, int x, int y, int color);
 void		fill_background(t_img *img, int color);
 int			close_window(t_win *win);
-void		init_fractol(t_win *win, int width, int height);
+int		init_fractol(t_win *win, int width, int height);
 
 /* Event handlers */
 int			handle_keypress(int keycode, t_win *win);
@@ -87,5 +87,6 @@ int			parse_julia(int argc, char **argv, t_win *win, int *size);
 int			parse_mandelbrot(int argc, char **argv, int *w, int *h);
 void		init_julia_default(t_win *win);
 void		init_params(t_win *win);
+int			free_all(t_win *win);
 
 #endif
