@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 00:12:22 by romukena          #+#    #+#             */
-/*   Updated: 2025/09/05 18:40:27 by romukena         ###   ########.fr       */
+/*   Updated: 2025/09/05 18:41:38 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,6 @@ int	parse_args(int argc, char **argv, t_win *win, int *size)
 	}
 	else if (!ft_strcmp(argv[1], "julia"))
 		return (parse_julia(argc, argv, win, size));
-	return (ft_putstr_fd("Error: Unknown fractal type. Use mandelbrot/julia/burningship\n",
+	return (ft_putstr_fd("Error: Use mandelbrot/julia/burningship\n",
 			2), 1);
 }
